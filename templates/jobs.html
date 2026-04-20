@@ -1,0 +1,472 @@
+{% extends "base.html" %}
+
+{% block title %}Job Search - Academic Career Portal{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search - AcademiCV</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-section {
+            padding: 4rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .search-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .form-control {
+            border-radius: 15px;
+            border: 2px solid rgba(37, 99, 235, 0.1);
+            padding: 1rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), #8b5cf6);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .job-links-section {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .job-link-card {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(139, 92, 246, 0.05));
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .job-link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .job-platform-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-right: 1rem;
+        }
+
+        .linkedin { background: #0077b5; }
+        .indeed { background: #2557a7; }
+        .glassdoor { background: #0caa41; }
+        .naukri { background: #7b68ee; }
+        .monster { background: #6e46ae; }
+        .angellist { background: #000000; }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(37, 99, 235, 0.3);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .nav-pills .nav-link {
+            border-radius: 50px;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-pills .nav-link.active {
+            background: linear-gradient(45deg, var(--primary-color), #8b5cf6);
+        }
+
+        .section-divider {
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), #8b5cf6);
+            border-radius: 2px;
+            margin: 2rem 0;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+        }
+
+        .form-group {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Find Your Dream Job</h1>
+            <p class="hero-subtitle">Search across multiple job platforms and get placement preparation tips</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="search-section">
+            <h2 class="text-center mb-4">
+                <i class="fas fa-search me-2"></i>Job Search
+            </h2>
+            <form id="jobSearchForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="cityInput" placeholder="Enter city name" required>
+                            <i class="fas fa-map-marker-alt search-icon"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="jobTitleInput" placeholder="Enter job title" required>
+                            <i class="fas fa-briefcase search-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search me-2"></i>Get Jobs
+                    </button>
+                </div>
+            </form>
+            <div class="spinner mt-3" id="loadingSpinner"></div>
+        </div>
+
+        <div class="job-links-section" id="jobLinksSection">
+            <h3 class="mb-4">
+                <i class="fas fa-external-link-alt me-2"></i>Job Opportunities
+            </h3>
+            <div id="jobLinksList"></div>
+        </div>
+
+        <div class="search-section">
+            <h3 class="text-center mb-4">
+                <i class="fab fa-youtube text-danger me-2"></i>Placement Preparation Videos
+            </h3>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title">Interview Preparation Tips</h6>
+                        <p class="card-text text-muted">Master your interview skills</p>
+                        <a href="https://www.youtube.com/results?search_query=interview+preparation+tips+2024" 
+                           target="_blank" class="btn btn-outline-primary btn-sm">Watch Now</a>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title">Technical Interview Guide</h6>
+                        <p class="card-text text-muted">Ace your technical rounds</p>
+                        <a href="https://www.youtube.com/results?search_query=technical+interview+preparation+coding" 
+                           target="_blank" class="btn btn-outline-primary btn-sm">Watch Now</a>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title">Behavioral Interview Questions</h6>
+                        <p class="card-text text-muted">Handle HR questions confidently</p>
+                        <a href="https://www.youtube.com/results?search_query=behavioral+interview+questions+and+answers" 
+                           target="_blank" class="btn btn-outline-primary btn-sm">Watch Now</a>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title">How to get Tech Placement in 6 Months?</h6>
+                        <p class="card-text text-muted">Get the best offer possible</p>
+                        <a href="https://www.youtube.com/watch?v=m7VcIH_N9ZY" 
+                           target="_blank" class="btn btn-outline-primary btn-sm">Watch Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const jobSearchForm = document.getElementById('jobSearchForm');
+        const cityInput = document.getElementById('cityInput');
+        const jobTitleInput = document.getElementById('jobTitleInput');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const jobLinksSection = document.getElementById('jobLinksSection');
+        const jobLinksList = document.getElementById('jobLinksList');
+
+        jobSearchForm.addEventListener('submit', searchJobs);
+
+        async function searchJobs(e) {
+            e.preventDefault();
+            
+            const city = cityInput.value.trim();
+            const jobTitle = jobTitleInput.value.trim();
+            
+            if (!city || !jobTitle) {
+                alert('Please enter both city and job title');
+                return;
+            }
+
+            loadingSpinner.style.display = 'block';
+            jobLinksSection.style.display = 'none';
+
+            try {
+                const response = await fetch(`/get_jobs?city=${encodeURIComponent(city)}&job_title=${encodeURIComponent(jobTitle)}`);
+                const result = await response.json();
+                
+                if (response.ok) {
+                    displayJobLinks(result);
+                } else {
+                    alert(result.error || 'Error fetching jobs');
+                }
+            } catch (error) {
+                alert('Error searching jobs: ' + error.message);
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        function displayJobLinks(data) {
+            jobLinksList.innerHTML = '';
+            
+            const platformIcons = {
+                'LinkedIn': 'fab fa-linkedin',
+                'Indeed': 'fas fa-search',
+                'Glassdoor': 'fas fa-building',
+                'Naukri': 'fas fa-briefcase',
+                'Monster': 'fas fa-monster',
+                'AngelList': 'fas fa-rocket'
+            };
+
+            Object.entries(data.job_links).forEach(([platform, url]) => {
+                const linkCard = document.createElement('a');
+                linkCard.className = 'job-link-card fade-in';
+                linkCard.href = url;
+                linkCard.target = '_blank';
+                linkCard.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <div class="job-platform-icon ${platform.toLowerCase()}">
+                            <i class="${platformIcons[platform] || 'fas fa-external-link-alt'}"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">${platform}</h5>
+                            <p class="mb-0 text-muted">${data.job_title} jobs in ${data.city}</p>
+                        </div>
+                        <div class="ms-auto">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                `;
+                jobLinksList.appendChild(linkCard);
+            });
+
+            jobLinksSection.style.display = 'block';
+            jobLinksSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.video-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add input animations
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}
